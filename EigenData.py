@@ -13,13 +13,21 @@ class EigenData(object):
         self._eigen_path = eigen_path
         self._footage_path = footage_path
     
-    def generate_postures(self, array1, array2):
+    def generate_shapes(self, array1, array2):
         plt.plot(array1, array2, '.')
         plt.title("Worm Shape")
         plt.xlabel("s")
         plt.ylabel("θ")
         plt.show()
 
+    def generate_a1a2(self, a1, a2):
+        plt.plot(a1, a2, '--.')
+        plt.title("probability density for the two PCA modes")
+        plt.xlabel("a1")
+        plt.ylabel("a2")
+        plt.show()
+        
+        
     def get_data(self):
         '''
         Loads the matlab files from the original experiment and parses them into
@@ -66,10 +74,20 @@ class EigenData(object):
 
         for num in range(1, 101):
             numbers_array.append(num/100)
+        a1 = []
+        a2 = []
+        for wormfootage in footage:
+            worm = footage[wormfootage]
+            wmrow_cnt = 0
+            a1 = worm[0]
+            a1 = a1[:100]
+            a2 = worm[1]
+            a2 = a2[:100]
+            self.generate_a1a2(a1, a2)
             
             
         for i in range(0, 12):
-            self.generate_postures(numbers_array, big_array[i])
+            self.generate_shapes(numbers_array, big_array[i])
             
             
             
