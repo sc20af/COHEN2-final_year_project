@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import scipy.io
 import h5py
+import math
 
 class EigenData(object):
     '''Represents the original experiment data.'''
@@ -12,12 +13,22 @@ class EigenData(object):
     def __init__(self, eigen_path ="", footage_path=""):
         self._eigen_path = eigen_path
         self._footage_path = footage_path
+        
+    def generate_postures(self,array):
+        dt = []
+        for i in range(1,100):
+            dt.append(i/100)
+        plt.plot(dt,array,'.--')
+        plt.title("Worm posture")
+        plt.xlabel("t")
+        plt.ylabel("s")
+        plt.show()
     
     def generate_shapes(self, array1, array2):
         plt.plot(array1, array2, '.')
         plt.title("Worm Shape")
         plt.xlabel("s")
-        plt.ylabel("θ")
+        plt.ylabel("θ(rad)")
         plt.show()
 
     def generate_a1a2(self, a1, a2):
@@ -27,6 +38,9 @@ class EigenData(object):
         plt.ylabel("a2")
         plt.show()
         
+    def integrate_posture(self, angle1 ,angle2):
+        out = math.sin(angle2) -math.cos(angle2) +angle2 -math.sin(angle1) + math.cos(angle1) -angle1
+        return out
         
     def get_data(self):
         '''
@@ -69,7 +83,7 @@ class EigenData(object):
                 wm = 0
             big_array.append(worm_array)
             worm_array = []
-        # print(big_array)
+        #print(big_array)
         numbers_array = []
 
         for num in range(1, 101):
@@ -83,12 +97,36 @@ class EigenData(object):
             a1 = a1[:100]
             a2 = worm[1]
             a2 = a2[:100]
-            self.generate_a1a2(a1, a2)
+            #self.generate_a1a2(a1, a2)
             
-            
+        
         for i in range(0, 12):
-            self.generate_shapes(numbers_array, big_array[i])
+           self.generate_shapes(numbers_array, big_array[i])
+
+# np.set_printoptions(threshold=sys.maxsize)
+
+
+#first worm 
+        first_worm = []
+        post_array_worm = []
+        post_array_big = []
+        for i in range(0,12):
+            worm = big_array[i]
+            #print(worm) #arclength along the body
             
+            for j in range(0,99):
+                pos = self.integrate_posture(worm[j],worm[j+1])
+                post_array_worm.append(pos)
+                #print(j)
+            post_array_big.append(post_array_worm)
+            post_array_worm = []
+        print(post_array_big)
+
+        for i in range(0,12):
+            worm = post_array_big[i]
+            fr = worm[::-1]
+            #print(fr)
+            self.generate_postures(fr)
             
             
         return eigenworms, footage
