@@ -55,7 +55,6 @@ class EigenData(object):
         end_point = (start_p[0] + len * math.cos(theta), start_p[1] + len * math.sin(theta))
         return end_point
     
-
     def line_of_segment(self,start_p,angles):
         segments_array = []
         previous_end = start_p

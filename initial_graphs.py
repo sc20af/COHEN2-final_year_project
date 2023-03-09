@@ -17,7 +17,7 @@ class Initial_graphs(object):
             s.append(a)
         count = 1
         for ew in eigenworms[:6]:
-            plt.plot(s, ew, '.')
+            plt.plot(s, ew, '-')
             message = ('Eigenworm: '+ str(count))
             plt.title(message)
             plt.xlabel("s")
@@ -40,5 +40,6 @@ class Initial_graphs(object):
             plt.ylabel("a2")
             plt.show()
 ig = Initial_graphs().generate_a1a2()
+ig = Initial_graphs().generate_first_eigenworms()
 
 #need to sort eigenworms 

@@ -33,7 +33,16 @@ class EigenData(object):
         return eigenworms, footage
     
 
-ed = EigenData("EigenWorms.mat", "20150814-All-PNAS2011-DataStitched .mat")
-d1, d2 = ed.get_data()
+# ed = EigenData("EigenWorms.mat", "20150814-All-PNAS2011-DataStitched .mat")
+# d1, d2 = ed.get_data()
 #print(d1) #2d numpy array each array represents a column of the matrix (eigeworms)
 #print(d2) #dictionary -> num of worm and 5or6 columns representing the eigenvalues
+eigen_data = EigenData(eigen_path="EigenWorms.mat", footage_path="20150814-All-PNAS2011-DataStitched .mat")
+eigenworms, footage = eigen_data.get_data()
+first_5_eigenworms = eigenworms[0:5,:]
+eig_worm_0 = eigenworms[0,:]
+eig_worm_1 = eigenworms[1,:]
+eig_worm_2 = eigenworms[2,:]
+eig_worm_3 = eigenworms[3,:]
+eig_worm_4 = eigenworms[4,:]
+print(eig_worm_4)
