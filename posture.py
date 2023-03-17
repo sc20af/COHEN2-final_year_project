@@ -81,19 +81,31 @@ if __name__ == "__main__":
     r = r.transpose()
     for frames in range(0,33600):
         angles = r[frames]
-        start_point = (0,0)
+        start_point = (1,0)
         X = []
         Y = []
         seg = data.line_of_segment(start_point,angles)
         plt.clf()
         for element in seg:
+            #print(element)
+            maxx=-100
+            maxy=-100
+            if element[0][0]>=maxx:
+                maxx= element[0][0]
+            if element[1][0]>=maxx:
+                maxx = element[1][0]
+            if element[0][1]>=maxy:
+                maxy = element[0][1]
+            if element[1][1]>=maxy:
+                maxy = element[1][1]
             X.append(element[0][0])
             X.append(element[1][0])
             Y.append(element[0][1])
             Y.append(element[1][1])
         plt.scatter(X,Y,marker='')
         plt.plot(X, Y, '-')
-        plt.pause(0.001)
+        plt.plot(maxx,maxy,'.',color='red')
+        plt.pause(0.04)
            
     plt.show()
   

@@ -45,4 +45,4 @@ eig_worm_1 = eigenworms[1,:]
 eig_worm_2 = eigenworms[2,:]
 eig_worm_3 = eigenworms[3,:]
 eig_worm_4 = eigenworms[4,:]
-print(eig_worm_4)
+#print(eig_worm_4)
