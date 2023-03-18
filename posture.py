@@ -81,6 +81,7 @@ if __name__ == "__main__":
     r = r.transpose()
     for frames in range(0,33600):
         angles = r[frames]
+        angles = angles[::-1]
         start_point = (1,0)
         X = []
         Y = []
