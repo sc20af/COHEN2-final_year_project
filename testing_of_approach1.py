@@ -5,16 +5,17 @@ import matplotlib.pyplot as plt
 
 #this functions prints 2 graphs showing the original matrix and the reconstructed matrix using PCA
 def plot_PCA(original_matrix,k,eigenvectors,eigenvalues):
-    reconstructed_matrix = np.zeros_like(original_matrix)
+    #creates a new array of same shape, with elements initially zero
+    reconstructed_matrix = np.zeros(original_matrix.shape)
     reconstructed_matrix = reconstructed_matrix.astype(np.complex128)
     for item in range(0,k):
-        egvec = np.outer(eigenvectors[:, item], np.conj(eigenvectors[:, item]))
+        egvec = np.outer(eigenvectors[:, item], np.conj(eigenvectors[:, item])) #gets eigenvector
         # Multiply eigenvector by the corresponding eigenvalue
         final = eigenvalues[item] * egvec
         # Adds multiplication recursively to the reconstructed matrix
         reconstructed_matrix += final
     
-    # Convert the reconstructed matrix to real numbers
+    # Convert the reconstructed to real numbers
     reconstructed_matrix = np.real(reconstructed_matrix)
     
     # Plot original and reconstructed matrix
@@ -53,8 +54,8 @@ def plot_functions():
     # Initialise the subplot function using number of rows and columns
     figure, axis = plt.subplots(1, 2,figsize=(10, 5))
     # Multiply eigenvectors and eigenvalues to get back original sine wave
-    x_recon = eigenvectors_selected @ np.diag(eigenvalues_selected) 
-    x_recon = x_recon @ np.linalg.inv(eigenvectors_selected)
+    eg = eigenvectors_selected @ np.diag(eigenvalues_selected) 
+    x_recon = eg @ np.linalg.inv(eigenvectors_selected)
 
 
     # Plot original and reconstructed wave
