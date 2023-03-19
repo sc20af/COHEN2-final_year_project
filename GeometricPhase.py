@@ -36,8 +36,20 @@ class GeometricPhase(object):
 
         times = np.linspace(0, 4, 100) 
         #self.generate_phase_graph(phase_angles)
+        phase_velocity = np.diff(phase_angles) / np.diff(times)
+        #self.generate_phase_velocity(phase_velocity,times)
+        times = times[:99]
+        phase_acceleration = np.diff(phase_velocity) / np.diff(times)
+        #self.generate_phase_acceleration(phase_acceleration,times)
+
+
+    def generate_phase_velocity(self,ph_vel,t):
+        plt.plot(t[:-1], ph_vel)
+        plt.xlabel('Time (s)')
+        plt.ylabel('Phase velocity (rad/s)')
+        plt.show()
     
-     def generate_phase_graph(self,angles):
+    def generate_phase_graph(self,angles):
         times = np.linspace(0, 4, 100) 
         plt.plot(times,angles, '--.')
         plt.title("Phase in time")
