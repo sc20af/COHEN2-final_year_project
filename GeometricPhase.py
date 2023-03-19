@@ -22,8 +22,28 @@ class GeometricPhase(object):
         a2 = worm[1]
         a2 = a2[:100]
         #self.generate_a1a2(a1,a2)
-    
+        phase_angles = np.arctan2(-a2, a1)
+        min_phase = 0
+        max_phase = 0
+        for phase in phase_angles:
+            if phase> max_phase:
+                max_phase = phase
+            if phase< min_phase:
+                min_phase = phase
+        #print("Max phase:", max_phase)
+        #print("Min phase:", min_phase)
+        #phase goes from -π to +π
 
+        times = np.linspace(0, 4, 100) 
+        #self.generate_phase_graph(phase_angles)
+    
+     def generate_phase_graph(self,angles):
+        times = np.linspace(0, 4, 100) 
+        plt.plot(times,angles, '--.')
+        plt.title("Phase in time")
+        plt.xlabel("t")
+        plt.ylabel("phase")
+        plt.show()
 
 
     def generate_a1a2(self,a1,a2):   
