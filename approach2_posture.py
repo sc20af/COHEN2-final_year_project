@@ -50,7 +50,7 @@ class EigenData(object):
             coefficients
         return(rec)
     
-    def segment_endpoint(self,start_p,len,ang):
+    def segment_endpoint(self,start_p,ang,len):
         theta = ang 
         end_point = (start_p[0] + len * math.cos(theta), start_p[1] + len * math.sin(theta))
         return end_point
@@ -60,11 +60,19 @@ class EigenData(object):
         previous_end = start_p
         for angle in angles:
             len = 0.01
-            segment_end = self.segment_endpoint(previous_end, len, angle)
+            segment_end = self.segment_endpoint(previous_end,angle,len)
             segments_array.append((previous_end, segment_end))
             previous_end = segment_end
         return segments_array
-     
+    def plot_angles(self,r):
+        for frame in range(0,33600):
+            plt.clf()
+            plt.scatter(s, r[frame],s=10,color='blue')
+            plt.plot(s, r[frame], '.--')
+            plt.pause(0.001)
+        plt.show()
+
+
 if __name__ == "__main__":
     data = EigenData()
     data.get_eigenworms('EigenWorms.mat')
@@ -79,6 +87,8 @@ if __name__ == "__main__":
             r = data.reconstruct(footage[k])
         count+=1
     r = r.transpose()
+    #data.plot_angles(r)
+    
     for frames in range(0,33600):
         angles = r[frames]
         angles = angles[::-1]
@@ -88,7 +98,6 @@ if __name__ == "__main__":
         seg = data.line_of_segment(start_point,angles)
         plt.clf()
         for element in seg:
-            #print(element)
             maxx=-100
             maxy=-100
             if element[0][0]>=maxx:

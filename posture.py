@@ -79,6 +79,7 @@ if __name__ == "__main__":
             r = data.reconstruct(footage[k])
         count+=1
     r = r.transpose()
+
     for frames in range(0,33600):
         angles = r[frames]
         angles = angles[::-1]
