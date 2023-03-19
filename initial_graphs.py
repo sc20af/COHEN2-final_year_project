@@ -39,7 +39,7 @@ class Initial_graphs(object):
             plt.xlabel("a1")
             plt.ylabel("a2")
             plt.show()
-ig = Initial_graphs().generate_a1a2()
-#ig = Initial_graphs().generate_first_eigenworms()
+#ig = Initial_graphs().generate_a1a2()
+ig = Initial_graphs().generate_first_eigenworms()
 
 #need to sort eigenworms 
