@@ -42,7 +42,11 @@ class GeometricPhase(object):
         phase_acceleration = np.diff(phase_velocity) / np.diff(times)
         #self.generate_phase_acceleration(phase_acceleration,times)
 
-
+    def generate_phase_acceleration(self,ph_acc,t):
+        plt.plot(t[:-1], ph_acc)
+        plt.xlabel('Time (s)')
+        plt.ylabel('Phase acceleration (cycles/s)')
+        plt.show()
     def generate_phase_velocity(self,ph_vel,t):
         plt.plot(t[:-1], ph_vel)
         plt.xlabel('Time (s)')
