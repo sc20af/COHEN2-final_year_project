@@ -21,7 +21,7 @@ class GeometricPhase(object):
         a1 = a1[:100]
         a2 = worm[1]
         a2 = a2[:100]
-        #self.generate_a1a2(a1,a2)
+        self.generate_a1a2(a1,a2)
         phase_angles = np.arctan2(-a2, a1)
         min_phase = 0
         max_phase = 0
@@ -35,12 +35,12 @@ class GeometricPhase(object):
         #phase goes from -π to +π
 
         times = np.linspace(0, 4, 100) 
-        #self.generate_phase_graph(phase_angles)
+        self.generate_phase_graph(phase_angles)
         phase_velocity = np.diff(phase_angles) / np.diff(times)
-        #self.generate_phase_velocity(phase_velocity,times)
+        self.generate_phase_velocity(phase_velocity,times)
         times = times[:99]
         phase_acceleration = np.diff(phase_velocity) / np.diff(times)
-        #self.generate_phase_acceleration(phase_acceleration,times)
+        self.generate_phase_acceleration(phase_acceleration,times)
 
     def generate_phase_acceleration(self,ph_acc,t):
         plt.plot(t[:-1], ph_acc)

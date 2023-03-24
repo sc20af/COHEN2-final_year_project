@@ -17,7 +17,11 @@ def plot_PCA(original_matrix,k,eigenvectors,eigenvalues):
     
     # Convert the reconstructed to real numbers
     reconstructed_matrix = np.real(reconstructed_matrix)
-    
+    print("ORIGINAL MATRIX")
+    print(original_matrix)
+    print()
+    print("RECONSTRUCTED MATRIX")
+    print(reconstructed_matrix)
     # Plot original and reconstructed matrix
     figure, axis = plt.subplots(1, 2,figsize=(10, 5))
     om = axis[0].imshow(original_matrix)

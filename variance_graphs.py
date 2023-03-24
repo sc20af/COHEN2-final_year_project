@@ -124,4 +124,4 @@ class Initial_graphs(object):
 
     
 Initial_graphs().variance_modes_function()
-Initial_graphs().variance_with_s()
+#Initial_graphs().variance_with_s()
