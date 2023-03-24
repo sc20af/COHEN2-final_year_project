@@ -23,12 +23,19 @@ def sort_eigen(eigenvalues, eigenvectors):
 def choose_k_eigenvectors(k,eigenvalues,eigenvectors):
     eigenvalues_selected = eigenvalues[:k]
     eigenvectors_selected = eigenvectors[:, :k]
-    return eigenvalues_selected,eigenvectors_selected
+    return eigenvalues_selected,
+def reconstructed_matrix(k, eigenvalues,eigenvectors,matrix):
+    reconstructed_matrix = np.zeros_like(matrix, dtype=np.complex128)
+    for i in range(k):
+        reconstructed_matrix += eigenvalues[i] * np.outer(eigenvectors[:, i], np.conj(eigenvectors[:, i]))
+    reconstructed_matrix = np.real(reconstructed_matrix)
+    return reconstructed_matrix
 def main():
     angles,covariance_matrix = generate_matrix()
     eigenvalues, eigenvectors = eigen_decomposition(covariance_matrix)
     eigenvalues, eigenvectors = sort_eigen(eigenvalues, eigenvectors)
     k = 90
     eigenvalues_selected,eigenvectors_selected=choose_k_eigenvectors(k,eigenvalues,eigenvectors)
+    recon_matrix = reconstructed_matrix(k,eigenvalues_selected,eigenvectors_selected,covariance_matrix)
 if __name__ == "__main__":
     main()
