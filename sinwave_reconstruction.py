@@ -14,11 +14,16 @@ def eigen_decomposition(matrix):
     #get the eigenvalues and eigenvectors from the covariance matrix
     eigenvalues, eigenvectors = np.linalg.eig(matrix)
     return eigenvalues, eigenvectors
-
+def sort_eigen(eigenvalues, eigenvectors):
+    # Sort eigenvalues and eigenvectors
+    sort_indices = np.argsort(eigenvalues)[::-1]
+    sorted_eigenvalues = eigenvalues[sort_indices]
+    sorted_eigenvectors = eigenvectors[:, sort_indices]
+    return sorted_eigenvalues,sorted_eigenvectors
 def main():
     angles,covariance_matrix = generate_matrix()
     eigenvalues, eigenvectors = eigen_decomposition(covariance_matrix)
-
+    eigenvalues, eigenvectors = sort_eigen(eigenvalues, eigenvectors)
 
 if __name__ == "__main__":
     main()
