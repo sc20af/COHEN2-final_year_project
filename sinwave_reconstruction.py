@@ -42,6 +42,16 @@ def plot_matrix_vs_reconstructed_matrix(reconstructed_matrix,angles):
     axis[1].plot(angles, x_recon[:, 0], label='Reconstructed Matrix')
     axis[1].set_title("Reconstructed Matrix")
     plt.show()
+
+def plot_histograms(reconstructed_matrix,cov_matrix):
+    fig, (ax1,ax2) = plt.subplots(1, 2, figsize=(10, 5))
+    im1 = ax1.imshow(cov_matrix)
+    ax1.set_title('Original Matrix')
+    im2 = ax2.imshow(reconstructed_matrix)
+    ax2.set_title('Reconstructed Matrix')
+    fig.colorbar(im1, ax=ax1)
+    fig.colorbar(im2, ax=ax2)
+    plt.show()
 def main():
     angles,covariance_matrix = generate_matrix()
     eigenvalues, eigenvectors = eigen_decomposition(covariance_matrix)
@@ -50,5 +60,6 @@ def main():
     eigenvalues_selected,eigenvectors_selected=choose_k_eigenvectors(k,eigenvalues,eigenvectors)
     recon_matrix = reconstructed_matrix(k,eigenvalues_selected,eigenvectors_selected,covariance_matrix)
     plot_matrix_vs_reconstructed_matrix(recon_matrix,angles)
+    plot_histograms(recon_matrix,covariance_matrix)
 if __name__ == "__main__":
     main()
