@@ -30,6 +30,18 @@ def reconstructed_matrix(k, eigenvalues,eigenvectors,matrix):
         reconstructed_matrix += eigenvalues[i] * np.outer(eigenvectors[:, i], np.conj(eigenvectors[:, i]))
     reconstructed_matrix = np.real(reconstructed_matrix)
     return reconstructed_matrix
+def plot_matrix_vs_reconstructed_matrix(reconstructed_matrix,angles):
+    figure, axis = plt.subplots(1, 2,figsize=(10, 5))
+    amplitude = 1
+    f=1
+    T=1/f
+    x_recon = amplitude*np.sin(reconstructed_matrix/T)
+    x = amplitude*np.sin(angles/T)
+    axis[0].plot(angles, x, label='Original Matrix')
+    axis[0].set_title("Original Matrix")
+    axis[1].plot(angles, x_recon[:, 0], label='Reconstructed Matrix')
+    axis[1].set_title("Reconstructed Matrix")
+    plt.show()
 def main():
     angles,covariance_matrix = generate_matrix()
     eigenvalues, eigenvectors = eigen_decomposition(covariance_matrix)
@@ -37,5 +49,6 @@ def main():
     k = 90
     eigenvalues_selected,eigenvectors_selected=choose_k_eigenvectors(k,eigenvalues,eigenvectors)
     recon_matrix = reconstructed_matrix(k,eigenvalues_selected,eigenvectors_selected,covariance_matrix)
+    plot_matrix_vs_reconstructed_matrix(recon_matrix,angles)
 if __name__ == "__main__":
     main()
