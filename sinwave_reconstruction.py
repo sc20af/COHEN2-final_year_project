@@ -20,10 +20,15 @@ def sort_eigen(eigenvalues, eigenvectors):
     sorted_eigenvalues = eigenvalues[sort_indices]
     sorted_eigenvectors = eigenvectors[:, sort_indices]
     return sorted_eigenvalues,sorted_eigenvectors
+def choose_k_eigenvectors(k,eigenvalues,eigenvectors):
+    eigenvalues_selected = eigenvalues[:k]
+    eigenvectors_selected = eigenvectors[:, :k]
+    return eigenvalues_selected,eigenvectors_selected
 def main():
     angles,covariance_matrix = generate_matrix()
     eigenvalues, eigenvectors = eigen_decomposition(covariance_matrix)
     eigenvalues, eigenvectors = sort_eigen(eigenvalues, eigenvectors)
-
+    k = 90
+    eigenvalues_selected,eigenvectors_selected=choose_k_eigenvectors(k,eigenvalues,eigenvectors)
 if __name__ == "__main__":
     main()
