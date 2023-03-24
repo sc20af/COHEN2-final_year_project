@@ -10,10 +10,14 @@ def generate_matrix():
     #construct covariance matrix
     cov_matrix = angles[np.arange(100)[:, None] - np.arange(100)]
     return angles,cov_matrix
+def eigen_decomposition(matrix):
+    #get the eigenvalues and eigenvectors from the covariance matrix
+    eigenvalues, eigenvectors = np.linalg.eig(matrix)
+    return eigenvalues, eigenvectors
 
 def main():
     angles,covariance_matrix = generate_matrix()
-   
+    eigenvalues, eigenvectors = eigen_decomposition(covariance_matrix)
 
 
 if __name__ == "__main__":
