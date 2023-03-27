@@ -4,11 +4,12 @@ from scipy.linalg import toeplitz
 import matplotlib.pyplot as plt
 
 def generate_matrix():
-    angles = np.linspace(0, 2 * np.pi, num=100, endpoint=False)
+    number = 100
+    angles = np.linspace(0, 2 * np.pi, num=number, endpoint=False)
     #This will create an array called angles with 100 equally spaced angles between 0 and 2π,
     #where the endpoint=False argument means that the end point 2π is not included in the angles
     #construct covariance matrix
-    cov_matrix = angles[np.arange(100)[:, None] - np.arange(100)]
+    cov_matrix = angles[np.arange(number)[:, None] - np.arange(number)]
     return angles,cov_matrix
 
 def eigen_decomposition(matrix):
@@ -56,6 +57,7 @@ def plot_heatmaps(reconstructed_matrix,cov_matrix):
     plt.show()
 def plot_error_heatmap(reconstructed_matrix,cov_matrix):
     error = cov_matrix - reconstructed_matrix
+    print(error)
     # Plot the heatmap
     plt.imshow(error, cmap='viridis', interpolation='nearest')
     # Add colorbar
@@ -68,7 +70,7 @@ def main():
     angles,covariance_matrix = generate_matrix()
     eigenvalues, eigenvectors = eigen_decomposition(covariance_matrix)
     eigenvalues, eigenvectors = sort_eigen(eigenvalues, eigenvectors)
-    k = 90
+    k = 100
     eigenvalues_selected,eigenvectors_selected=choose_k_eigenvectors(k,eigenvalues,eigenvectors)
     recon_matrix = reconstructed_matrix(k,eigenvalues_selected,eigenvectors_selected,covariance_matrix)
     plot_matrix_vs_reconstructed_matrix(recon_matrix,angles)

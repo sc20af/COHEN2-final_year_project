@@ -37,6 +37,8 @@ class GeometricPhase(object):
         times = np.linspace(0, 4, 100) 
         self.generate_phase_graph(phase_angles)
         phase_velocity = np.diff(phase_angles) / np.diff(times)
+        frequency = phase_velocity / (2*math.pi)
+        #print(frequency)
         self.generate_phase_velocity(phase_velocity,times)
         times = times[:99]
         phase_acceleration = np.diff(phase_velocity) / np.diff(times)
