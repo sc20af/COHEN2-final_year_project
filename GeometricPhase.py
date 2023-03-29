@@ -64,7 +64,7 @@ class GeometricPhase(object):
         plt.ylabel('Phase acceleration (cycles/s)')
         plt.show()
 
-        
+
     def generate_phase_velocity(self,ph_vel,t):
         plt.plot(t[:-1], ph_vel)
         plt.title("Phase velocity in time")
@@ -92,12 +92,12 @@ class GeometricPhase(object):
         current_phv = phv[num]
         Total_Sum = 0
         for i in range(1,100):
-            s=0.1
+            s=0.01
             curvature = (angles[i]-angles[i-1])/s
             Radius = 1/curvature
             Total_Sum += Radius
         Radius_avg = Total_Sum/100
-        velocity = Radius_avg*current_phv/10
+        velocity = Radius_avg*current_phv
         return velocity
     
 
