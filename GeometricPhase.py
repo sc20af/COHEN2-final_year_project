@@ -15,7 +15,7 @@ for k in footage.keys():
         r = ed.reconstruct(footage[k])
     count+=1
 r = r.transpose()
-print(r[0])
+#print(r[0])
 class GeometricPhase(object):
     def main_fun(self):
         a1 = []
@@ -51,22 +51,23 @@ class GeometricPhase(object):
         times = times[:99]
         phase_acceleration = np.diff(phase_velocity) / np.diff(times)
         self.generate_phase_acceleration(phase_acceleration,times)
-        num=0
-        a11 = a1[0]
-        a12 = a2[0]
-        #velocity = self.find_velocity_way1(a11,a12,phase_velocity,num)
-        #print(velocity)
+        #num=0
         for num in range(0,10):
-            vel = self.find_velocity_way2(phase_velocity,r[0],num)
-            print(vel)
+             vel1 = self.find_velocity_way1(phase_velocity,r[0],num)
+             print(vel1)
+
 
     def generate_phase_acceleration(self,ph_acc,t):
         plt.plot(t[:-1], ph_acc)
         plt.xlabel('Time (s)')
+        plt.title("Phase acceleration in time")
         plt.ylabel('Phase acceleration (cycles/s)')
         plt.show()
+
+        
     def generate_phase_velocity(self,ph_vel,t):
         plt.plot(t[:-1], ph_vel)
+        plt.title("Phase velocity in time")
         plt.xlabel('Time (s)')
         plt.ylabel('Phase velocity (rad/s)')
         plt.show()
@@ -87,38 +88,18 @@ class GeometricPhase(object):
         plt.ylabel("a2")
         plt.show()
     
-    def find_velocity_way1(self,a1,a2,phv,num):
-        #s -> position
-        #n -> number of waves
-        #L -> body length
-        n=1
-        L=1
-        TotalCurvature=0
-        for i in range(1,101):
-            s = i/100
-            v1 = math.sin(2*math.pi*n*s/L)
-            v2 = math.cos(2*math.pi*n*s/L)
-            curvature = a1*v1+a2*v2
-            TotalCurvature += curvature
-            #print("TotalCurvature = " ,TotalCurvature )
-        AveragingCurvature = TotalCurvature/100
-        #print("Averaging Curvature = " ,AveragingCurvature)
-        Radius = 1/AveragingCurvature
-        #print(phv[0])
-        velocity = phv[num]*Radius
-        return velocity
-    
-    def find_velocity_way2(self,phv,angles,num):
+    def find_velocity_way1(self,phv,angles,num):
         current_phv = phv[num]
         Total_Sum = 0
-        for i in range(1,101):
-            s = i/100
-            Radius = s/angles[i-1]
+        for i in range(1,100):
+            s=0.1
+            curvature = (angles[i]-angles[i-1])/s
+            Radius = 1/curvature
             Total_Sum += Radius
         Radius_avg = Total_Sum/100
-
         velocity = Radius_avg*current_phv/10
         return velocity
+    
 
         
 
