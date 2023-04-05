@@ -39,5 +39,6 @@ class Initial_graphs(object):
         plt.ylabel('Fraction of variance explained')
         plt.show()
 
+
     
 Initial_graphs().variance_modes_function()
