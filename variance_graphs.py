@@ -31,12 +31,14 @@ class Initial_graphs(object):
         for k in range(1, len(firstrow)+1):
             cumulative_sum += firstrow[k-1]
             frac_var.append(cumulative_sum/total_var)
-        #frac_var[::-1]
+        sorted_var = sorted(frac_var)
         # plot the fraction of variance explained
-        plt.plot(range(1, len(firstrow)+1), frac_var,'.',markersize=14)
+        x = [1,2,3,4,5]
+        plt.plot(x, sorted_var,'.',markersize=14)
+        plt.xticks(range(1, 6))
         plt.axhline(y=1, color='r', linestyle='-')
-        plt.xlabel('Number of eigenvalues')
-        plt.ylabel('Fraction of variance explained')
+        plt.xlabel('K',fontsize=13)
+        plt.ylabel(r'$\sigma^2_K$',fontsize=16)
         plt.show()
 
 
