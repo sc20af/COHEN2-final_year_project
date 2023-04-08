@@ -10,6 +10,7 @@ def generate_matrix():
     #where the endpoint=False argument means that the end point 2π is not included in the angles
     #construct covariance matrix
     cov_matrix = angles[np.arange(number)[:, None] - np.arange(number)]
+    #print(cov_matrix.shape)
     return angles,cov_matrix
 
 def eigen_decomposition(matrix):
@@ -41,10 +42,19 @@ def plot_matrix_vs_reconstructed_matrix(reconstructed_matrix,angles):
     T=1/f
     x_recon = amplitude*np.sin(reconstructed_matrix/T)
     x = amplitude*np.sin(angles/T)
+    axis[0].set_title("Original Matrix")
     axis[0].plot(angles, x, label='Original Matrix')
     axis[0].set_title("Original Matrix")
     axis[1].plot(angles, x_recon[:, 0], label='Reconstructed Matrix')
     axis[1].set_title("Reconstructed Matrix")
+    plt.show()
+def plot_sine_wave(angles):
+    amplitude = 1
+    f=1
+    T=1/f
+    x = amplitude*np.sin(angles/T)
+    plt.plot(angles, x, label='Original Matrix')
+    plt.title("Original Sine Wave")
     plt.show()
 def plot_heatmaps(reconstructed_matrix,cov_matrix):
     fig, (ax1,ax2) = plt.subplots(1, 2, figsize=(10, 5))
@@ -55,9 +65,14 @@ def plot_heatmaps(reconstructed_matrix,cov_matrix):
     fig.colorbar(im1, ax=ax1)
     fig.colorbar(im2, ax=ax2)
     plt.show()
+def sine_wave_heatmap(cov_matrix):
+    plt.imshow(cov_matrix)
+    plt.title('Sine Wave Heatmap')
+    plt.colorbar()
+    plt.show()
 def plot_error_heatmap(reconstructed_matrix,cov_matrix):
     error = cov_matrix - reconstructed_matrix
-    print(error)
+    #print(error)
     # Plot the heatmap
     plt.imshow(error, cmap='viridis', interpolation='nearest')
     # Add colorbar
@@ -73,7 +88,9 @@ def main():
     k = 100
     eigenvalues_selected,eigenvectors_selected=choose_k_eigenvectors(k,eigenvalues,eigenvectors)
     recon_matrix = reconstructed_matrix(k,eigenvalues_selected,eigenvectors_selected,covariance_matrix)
+    plot_sine_wave(angles)
     plot_matrix_vs_reconstructed_matrix(recon_matrix,angles)
+    sine_wave_heatmap(covariance_matrix)
     plot_heatmaps(recon_matrix,covariance_matrix)
     plot_error_heatmap(recon_matrix,covariance_matrix)
 

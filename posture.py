@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 #class EigenData was taken from stephens-2d-eigenworm-data gitlab repository from test.py in order to generate the data
 class EigenData(object):
     '''Represents the original experiment data.'''
-
+    #RECONSTRUCTS USING ALL PCs
     def __init__(self):
         self._eigenworms = None
 
@@ -64,7 +64,13 @@ class EigenData(object):
             segments_array.append((previous_end, segment_end))
             previous_end = segment_end
         return segments_array
-     
+    def plot_angles(self,angles,s):
+        plt.plot(s, angles,'--.')
+        plt.axhline(y=0, color='r', linestyle='--')
+        plt.ylabel('θ(rad)',fontsize=13)
+        plt.xlabel('s',fontsize=16)
+        plt.show()
+
 if __name__ == "__main__":
     data = EigenData()
     data.get_eigenworms('EigenWorms.mat')
@@ -79,7 +85,16 @@ if __name__ == "__main__":
             r = data.reconstruct(footage[k])
         count+=1
     r = r.transpose()
+    f_angles =r[0]
+    sum=0
+    for a in f_angles:
+        sum = sum+a
+    print("Mean angle:", sum/100)
+    s = []
+    for i in range(1,101):
+        s.append(i/100)
 
+    data.plot_angles(f_angles,s)
     for frames in range(0,33600):
         angles = r[frames]
         angles = angles[::-1]
