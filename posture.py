@@ -85,6 +85,7 @@ if __name__ == "__main__":
         if count == 0: # first worm
             r = data.reconstruct(footage[k])
         count+=1
+    print(r.shape)
     r = r.transpose()
     f_angles =r[0]
     sum=0
