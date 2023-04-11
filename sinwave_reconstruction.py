@@ -31,7 +31,6 @@ class SinWave(object):
         for x in range(length):
             for y in range(length):
                 cov_matrix[x,y] = temp_covariance[np.abs(x-y)]
-        print(cov_matrix)
 
         cov_matrix = angles[np.arange(number)[:, None] - np.arange(number)]
         return angles,cov_matrix
@@ -49,12 +48,15 @@ class SinWave(object):
         return sorted_eigenvalues,sorted_eigenvectors
     
     def reconstructed_matrix(self,k, eigenvalues,eigenvectors,matrix):
-        eigenvalues_selected = eigenvalues[:k]
-        eigenvectors_selected = eigenvectors[:, :k]
+        
         reconstructed_matrix = np.zeros_like(matrix, dtype=np.complex128)
         for i in range(k):
-            reconstructed_matrix += eigenvalues_selected[i] * np.outer(eigenvectors_selected[:, i], np.conj(eigenvectors_selected[:, i]))
+            eigenvector_value = eigenvectors[:,i]
+            eigenvector_value_conjugate = np.conj(eigenvectors[:, i])
+            final_eigenvector = np.outer(eigenvector_value,eigenvector_value_conjugate)
+            reconstructed_matrix += eigenvalues[i] * final_eigenvector
         reconstructed_matrix = np.real(reconstructed_matrix)
+
         return reconstructed_matrix
     
     def plot_matrix_vs_reconstructed_matrix(self,reconstructed_matrix,angles):
@@ -112,6 +114,8 @@ class SinWave(object):
         eigenvalues, eigenvectors = self.eigen_decomposition(covariance_matrix)
         eigenvalues, eigenvectors = self.sort_eigen(eigenvalues, eigenvectors)
         k = 100
+        eigenvalues = eigenvalues[:k]
+        eigenvectors = eigenvectors[:, :k]
         recon_matrix = self.reconstructed_matrix(k,eigenvalues,eigenvectors,covariance_matrix)
         self.plot_sine_wave(angles)
         self.plot_matrix_vs_reconstructed_matrix(recon_matrix,angles)
