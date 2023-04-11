@@ -5,6 +5,7 @@ import h5py
 import math
 import matplotlib.pyplot as plt
 #class EigenData was taken from stephens-2d-eigenworm-data gitlab repository from test.py in order to generate the data
+#https://gitlab.com/tom-ranner/stephens-2d-eigenworm-data/-/blob/master/stephens-2011-data/test.py
 class EigenData(object):
     '''Represents the original experiment data.'''
     #RECONSTRUCTS USING ALL PCs
