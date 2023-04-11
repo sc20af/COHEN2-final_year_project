@@ -2,8 +2,9 @@
 import numpy as np
 from scipy.linalg import toeplitz
 import matplotlib.pyplot as plt
-
+# class SinWave that has a purpose to use PCA and reconstruct a sin wave
 class SinWave(object):
+    #function generates initial angles and covariance matrix that will be used in reconstruction
     def generate_matrix(self):
         number = 100 # number of points
         frequency = 10   # Frequency
@@ -33,32 +34,35 @@ class SinWave(object):
                 cov_matrix[x,y] = temp_covariance[np.abs(x-y)]
 
         cov_matrix = angles[np.arange(number)[:, None] - np.arange(number)]
+        #returns angles and covariance matrix
         return angles,cov_matrix
-
+    #calculates eigenvalues and eigenvectors from covariance matrix
     def eigen_decomposition(self,cov_matrix):
         #get the eigenvalues and eigenvectors from the covariance matrix
         eigenvalues, eigenvectors = np.linalg.eig(cov_matrix)
         return eigenvalues, eigenvectors
-
+    #sorting in desc order function
     def sort_eigen(self,eigenvalues, eigenvectors):
-        # Sort eigenvalues and eigenvectors
+        # Sort eigenvalues and eigenvectors in descending order based on the eigenvalues
         sort_indices = np.argsort(eigenvalues)[::-1]
         sorted_eigenvalues = eigenvalues[sort_indices]
         sorted_eigenvectors = eigenvectors[:, sort_indices]
         return sorted_eigenvalues,sorted_eigenvectors
-    
-    def reconstructed_matrix(self,k, eigenvalues,eigenvectors,matrix):
-        
-        reconstructed_matrix = np.zeros_like(matrix, dtype=np.complex128)
+    #function that takes the number of eigenvectors needed for reconstruction, eigenvalues, eigenvectors and covariance matrix
+    def reconstructed_matrix(self,k, eigenvalues,eigenvectors,covariance_matrix):
+        #creates an array of zeros with the same shape as the covariance matrix
+        reconstructed_matrix = np.zeros_like(covariance_matrix, dtype=np.complex128)
+        #loop up to 'k' eigenvalues and eigenvectors
         for i in range(k):
-            eigenvector_value = eigenvectors[:,i]
-            eigenvector_value_conjugate = np.conj(eigenvectors[:, i])
-            final_eigenvector = np.outer(eigenvector_value,eigenvector_value_conjugate)
-            reconstructed_matrix += eigenvalues[i] * final_eigenvector
-        reconstructed_matrix = np.real(reconstructed_matrix)
+            eigenvector_value = eigenvectors[:,i] #eigenvector
+            eigenvector_value_conjugate = np.conj(eigenvectors[:, i]) #eigenvector conjugate
+            final_eigenvector = np.outer(eigenvector_value,eigenvector_value_conjugate) #final eigenvector
+            element = eigenvalues[i] * final_eigenvector  # element to be added in reconstructed matrix
+            reconstructed_matrix += element
+        reconstructed_matrix = np.real(reconstructed_matrix) # takes only the real part of the array
 
         return reconstructed_matrix
-    
+    #function plots the original matrix next to the final reconstructed
     def plot_matrix_vs_reconstructed_matrix(self,reconstructed_matrix,angles):
         figure, axis = plt.subplots(1, 2,figsize=(10, 5))
         amplitude = 1
@@ -72,7 +76,7 @@ class SinWave(object):
         axis[1].plot(angles, x_recon[:, 0], label='Reconstructed Matrix')
         axis[1].set_title("Reconstructed Matrix")
         plt.show()
-
+    #function plots initial sine wave
     def plot_sine_wave(self,angles):
         amplitude = 1
         f=1
@@ -81,7 +85,7 @@ class SinWave(object):
         plt.plot(angles, x, label='Original Matrix')
         plt.title("Original Sine Wave")
         plt.show()
-
+    #function plots heatmap of covariance matrix next to the heatmap of the reconstructed matrix
     def plot_heatmaps(self,reconstructed_matrix,cov_matrix):
         fig, (ax1,ax2) = plt.subplots(1, 2, figsize=(10, 5))
         im1 = ax1.imshow(cov_matrix)
@@ -91,13 +95,13 @@ class SinWave(object):
         fig.colorbar(im1, ax=ax1)
         fig.colorbar(im2, ax=ax2)
         plt.show()
-
+    #function plots only the original covariance matrix heatmap
     def sine_wave_heatmap(self,cov_matrix):
         plt.imshow(cov_matrix)
         plt.title('Sine Wave Heatmap')
         plt.colorbar()
         plt.show()
-
+    #function plots a heatmap showing the error between the original and reconstructed matrices
     def plot_error_heatmap(self,reconstructed_matrix,cov_matrix):
         error = cov_matrix - reconstructed_matrix
         #print(error)
@@ -107,7 +111,7 @@ class SinWave(object):
         plt.colorbar()
         # Show the plot
         plt.show()
-
+    #main function in class
     def main(self):
     
         angles,covariance_matrix = self.generate_matrix()
@@ -123,6 +127,6 @@ class SinWave(object):
         self.plot_heatmaps(recon_matrix,covariance_matrix)
         self.plot_error_heatmap(recon_matrix,covariance_matrix)
 
-
+#the main function is called first in the SinWave class
 if __name__ == "__main__":
     SinWave().main()
