@@ -51,19 +51,19 @@ class EigenData(object):
         return self._eigenworms[0:n_basis_required, :].transpose() @ \
             coefficients
     
-    def segment_endpoint(self,start_p,len,ang):
+    def segment_endpoint(self,start_p,length,ang):
         theta = ang 
-        end_point = (start_p[0] + len * math.cos(theta), start_p[1] + len * math.sin(theta))
+        end_point = (start_p[0] + length * math.cos(theta), start_p[1] + length * math.sin(theta))
         return end_point
     
     def line_of_segment(self,start_p,angles):
         segments_array = []
-        previous_end = start_p
+        segment_start = start_p
         for angle in angles:
-            len = 0.01
-            segment_end = self.segment_endpoint(previous_end, len, angle)
-            segments_array.append((previous_end, segment_end))
-            previous_end = segment_end
+            length = 0.01
+            segment_end = self.segment_endpoint(segment_start, length, angle)
+            segments_array.append((segment_start, segment_end))
+            segment_start = segment_end
         return segments_array
     def plot_angles(self,angles,s):
         plt.plot(s, angles,'--.')
@@ -97,6 +97,7 @@ if __name__ == "__main__":
         s.append(i/100)
 
     #data.plot_angles(f_angles,s)
+    #count2 =0
     for frames in range(0,33600):
         angles = r[frames]
         angles = angles[::-1] 
