@@ -96,17 +96,18 @@ if __name__ == "__main__":
     for i in range(1,101):
         s.append(i/100)
 
-    data.plot_angles(f_angles,s)
+    #data.plot_angles(f_angles,s)
     for frames in range(0,33600):
         angles = r[frames]
-        angles = angles[::-1]
-        start_point = (1,0)
+        angles = angles[::-1] 
+        #we reverse it so the s=0 which is the head should be at the right end
+        #s=1 which is tail should be the first angle in the reversed array
+        start_point = (0,0)
         X = []
         Y = []
         seg = data.line_of_segment(start_point,angles)
         plt.clf()
         for element in seg:
-            #print(element)
             maxx=-100
             maxy=-100
             if element[0][0]>=maxx:
@@ -125,6 +126,8 @@ if __name__ == "__main__":
         plt.plot(X, Y, '-')
         plt.plot(maxx,maxy,'.',color='red')
         plt.pause(0.04)
+        #start_point = element(len(element))
+        
            
     plt.show()
   
