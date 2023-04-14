@@ -1,12 +1,13 @@
-from code_generation import EigenData
+from code_gen import EigenData
 import matplotlib.pyplot as plt
 import numpy as np
 import scipy.io
 import h5py
 import math
 
-ed = EigenData("EigenWorms.mat", "20150814-All-PNAS2011-DataStitched .mat")
-eigenworms, footage = ed.get_data()
+data = EigenData() #creates instance of class
+eigenworms = data.get_eigenworms('EigenWorms.mat') #calls function get_eigenworms()
+footage = data.get_footage('20150814-All-PNAS2011-DataStitched .mat') #calls function get_footage() and returns dictionary of eigenvalues for the 12 worms
 
 class Initial_graphs(object):
 
@@ -22,7 +23,6 @@ class Initial_graphs(object):
         idx = np.argsort( firstrow )[::-1]
         firstrow = firstrow[idx]
         firstrow = firstrow[::-1]
-        print(firstrow)
         # compute the total sum of all eigenvalues
         total_var = np.sum(firstrow)
         #print(total_var)

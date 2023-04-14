@@ -1,4 +1,4 @@
-from posture import EigenData
+from code_gen import EigenData
 import matplotlib.pyplot as plt
 import numpy as np
 import scipy.io
