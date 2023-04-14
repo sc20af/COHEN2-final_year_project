@@ -50,27 +50,38 @@ class EigenData(object):
               #coefficients.shape)
         return self._eigenworms[0:n_basis_required, :].transpose() @ \
             coefficients
+    #function calculates the endpoint of the segment based on the start point and the angle
+    def segment_endpoint(self,segment_start,length,angle):
+        theta = angle # angles theta (θ) is measured in radians
+        start_x = segment_start[0] # start of segment x point
+        start_y = segment_start[1] # start of segment y point
+        end_x = start_x + length * math.cos(theta) # end of segment x point
+        end_y = start_y + length * math.sin(theta) # end pf segment y point
+        end_point = (end_x, end_y) # final endpoint tuple ( x,y)
+        return end_point # returns endpoint
     
-    def segment_endpoint(self,start_p,length,ang):
-        theta = ang 
-        end_point = (start_p[0] + length * math.cos(theta), start_p[1] + length * math.sin(theta))
-        return end_point
-    
+    #function calculates array of segments, where each segment includes the x,y coordinates of the start point and the end point
     def line_of_segment(self,start_p,angles):
-        segments_array = []
-        segment_start = start_p
+        segments_array = [] # creates array of segments
+        segment_start = start_p #start point of segment
         for angle in angles:
-            length = 0.01
-            segment_end = self.segment_endpoint(segment_start, length, angle)
-            segments_array.append((segment_start, segment_end))
-            segment_start = segment_end
-        return segments_array
+            length = 0.01 #length is fixed since we have 100 point and a total arc length s=1
+            segment_end = self.segment_endpoint(segment_start, length, angle) 
+            #calls the function to return the coordinates of the end point based on the start point and the angle
+            segments_array.append((segment_start, segment_end)) # appends tuple of x,y coordinates of start point and end point
+            #format of each point: (segment_start, segment_end) -> ((x_start,y_start),(x_end,y_end))
+            segment_start = segment_end # start of new segment becomes the end of previous segment
+        return segments_array # returns array of tuples of x,y coordinates of start point and end point
+    
+    #function plots graph showing the angles at each of the 100 points on the midline of the worm
     def plot_angles(self,angles,s):
-        plt.plot(s, angles,'--.')
-        plt.axhline(y=0, color='r', linestyle='--')
-        plt.ylabel('θ(rad)',fontsize=13)
-        plt.xlabel('s',fontsize=16)
-        plt.show()
+        #angles: array of 100 angles measured in radians
+        #s: coordinates of 100 equidistant points on the midline of the worm
+        plt.plot(s, angles,'--.') # plots angles with s
+        plt.axhline(y=0, color='r', linestyle='--') #plots a straight line at y=0
+        plt.ylabel('θ(rad)',fontsize=13) # x label
+        plt.xlabel('s',fontsize=16) #y label
+        plt.show() # show the graph
 
 if __name__ == "__main__":
     data = EigenData()
