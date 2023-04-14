@@ -92,6 +92,8 @@ class EigenData(object):
         plt.xlabel('s',fontsize=16) #y label
         plt.show() # show the graph
 
+
+
 if __name__ == "__main__":
     data = EigenData() #creates instance of class
     data.get_eigenworms('EigenWorms.mat') #calls function get_eigenworms()
