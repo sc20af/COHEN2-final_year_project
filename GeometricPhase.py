@@ -1,18 +1,18 @@
-#from code_generation import EigenData
-from init import EigenData
+
+from posture import EigenData
 import matplotlib.pyplot as plt
 import numpy as np
 import scipy.io
 import h5py
 import math
 
-ed = EigenData()
-eigenworms = ed.get_eigenworms("EigenWorms.mat")
-footage = ed.get_footage("20150814-All-PNAS2011-DataStitched .mat")
+data = EigenData() #creates instance of class
+data.get_eigenworms('EigenWorms.mat') #calls function get_eigenworms()
+footage = data.get_footage('20150814-All-PNAS2011-DataStitched .mat') #calls function get_footage() and returns dictionary of eigenvalues for the 12 worms
 count =0
 for k in footage.keys():
     if count == 0: # first worm
-        r = ed.reconstruct(footage[k])
+        r = data.reconstruct(footage[k])
     count+=1
 r = r.transpose()
 #print(r[0])
