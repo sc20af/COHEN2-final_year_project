@@ -138,9 +138,9 @@ if __name__ == "__main__":
             if element[1][1]>=maxy:
                 maxy = element[1][1]
             X.append(element[0][0]) #appends X coordinates to X array
-            X.append(element[1][0])
+            X.append(element[1][0]) #appends X coordinates to X array
             Y.append(element[0][1]) # appends Y coordinates to Y array
-            Y.append(element[1][1])
+            Y.append(element[1][1]) # appends Y coordinates to Y array
         plt.plot(X, Y, '-')     #plots the points using - to create segments
         plt.plot(maxx,maxy,'.',color='red') #the head is indicated with a red dot
         plt.pause(0.04) #each frame has a pause of 0.04s which is equal to 40ms like the actual time value
