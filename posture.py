@@ -47,7 +47,7 @@ class Posture(object):
 
 
 if __name__ == "__main__":
-    data = EigenData() #creates instance of class
+    data = EigenData() #creates an object to the class
     eigenworms = data.get_eigenworms('EigenWorms.mat') #calls function get_eigenworms()
     footage = data.get_footage('20150814-All-PNAS2011-DataStitched .mat') #calls function get_footage() and returns dictionary of eigenvalues for the 12 worms
     pos = Posture()

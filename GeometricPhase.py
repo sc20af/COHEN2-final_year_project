@@ -17,7 +17,7 @@ for k in footage.keys():
 r = r.transpose()
 #print(r[0])
 class GeometricPhase(object):
-    def main_fun(self):
+    def main(self):
         a1 = []
         a2 = []
         count = 0
@@ -48,13 +48,12 @@ class GeometricPhase(object):
         frequency = phase_velocity / (2*math.pi)
         #print(frequency)
         self.generate_phase_velocity(phase_velocity,times)
-        times = times[:99]
+        times = times[:99] 
         phase_acceleration = np.diff(phase_velocity) / np.diff(times)
         self.generate_phase_acceleration(phase_acceleration,times)
         #num=0
         for num in range(0,10):
-             vel1 = self.find_velocity_way1(phase_velocity,r[0],num)
-             print(vel1)
+             vel1 = self.find_velocity(phase_velocity,r[0],num)
 
 
     def generate_phase_acceleration(self,ph_acc,t):
@@ -88,7 +87,7 @@ class GeometricPhase(object):
         plt.ylabel("a2")
         plt.show()
     
-    def find_velocity_way1(self,phv,angles,num):
+    def find_velocity(self,phv,angles,num):
         current_phv = phv[num]
         Total_Sum = 0
         for i in range(1,100):
@@ -103,4 +102,4 @@ class GeometricPhase(object):
 
         
 
-ig = GeometricPhase().main_fun()
+ig = GeometricPhase().main()
