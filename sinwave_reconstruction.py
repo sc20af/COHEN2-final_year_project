@@ -2,12 +2,12 @@
 import numpy as np
 from scipy.linalg import toeplitz
 import matplotlib.pyplot as plt
-# class SinWave that has a purpose to use PCA and reconstruct a sin wave
+# class SineWave that has a purpose to use PCA and reconstruct a sin wave
 class SineWave(object):
     #function generates initial angles and covariance matrix that will be used in reconstruction
     def generate_matrix(self):
         number = 100 # number of points
-        frequency = 10   # Frequency
+        frequency = 1   # Frequency
         amplitude = 1   # Amplitude
         angles = np.linspace(0, 2 * np.pi, num=number, endpoint=False)
         time = np.linspace(0, number/frequency, number)  # Time 
@@ -87,6 +87,7 @@ class SineWave(object):
         plt.plot(angles, x, label='Original Matrix')
         plt.title("Original Sine Wave")
         plt.show()
+    #function plots the reconstructed wave
     def plot_reconstructed(self,reconstructed_matrix,angles):
         amplitude = 1
         f=1
@@ -111,12 +112,12 @@ class SineWave(object):
         plt.title('Sine Wave Heatmap')
         plt.colorbar()
         plt.show()
+    #function plots the heatmap of the reconstructed wave
     def reconstructed_wave_heatmap(self,reconstructed_matrix):
         plt.imshow(reconstructed_matrix)
         plt.title('Reconstructed Wave Heatmap')
         plt.colorbar()
         plt.show()
-    #function plots a
     #function plots a heatmap showing the error between the original and reconstructed matrices
     def plot_error_heatmap(self,reconstructed_matrix,cov_matrix):
         difference = np.abs(cov_matrix - reconstructed_matrix)
@@ -131,26 +132,33 @@ class SineWave(object):
         plt.show()
     #main function in class
     def main(self):
-    
-        angles,covariance_matrix = self.generate_matrix()
-        eigenvalues, eigenvectors = self.eigen_decomposition(covariance_matrix)
-        eigenvalues, eigenvectors = self.sort_eigen(eigenvalues, eigenvectors)
-        k = 90
+        angles,covariance_matrix = self.generate_matrix() # gets angles and resulted covariance matrix
+        eigenvalues, eigenvectors = self.eigen_decomposition(covariance_matrix) #eigenvalues and eigenvectors from cov matrix
+        eigenvalues, eigenvectors = self.sort_eigen(eigenvalues, eigenvectors) #sorts eigenvalues with corresponding eigenvectprs
+        k = 100
         print("Number of components used:" ,k)
-        current_eigenvalues = eigenvalues[:k]
-        current_eigenvectors = eigenvectors[:, :k]
+        current_eigenvalues = eigenvalues[:k] #takes needed eigenvalues specified by k
+        current_eigenvectors = eigenvectors[:, :k] #takes needed eigenvectors specified by k
+        #finds the reconstructed matrix and the current sum of eigenvalues
         recon_matrix,current_sum_eigenvalues = self.reconstructed_matrix(k,current_eigenvalues,current_eigenvectors,covariance_matrix)
+        #finds the reconstructed matrix and sum of all 100 eigenvalues
         recon_full_matrix,total_sum_eigenvalues = self.reconstructed_matrix(100,eigenvalues[:100],eigenvectors[:, :100],covariance_matrix)
+        #variance calculations 
         variance_percentage = current_sum_eigenvalues/total_sum_eigenvalues * 100
         print("Current sum of eigenvalues", np.real(current_sum_eigenvalues))
         print("Total sum of eigenvalues", np.real(total_sum_eigenvalues))
         print("Percentage of variance", np.real(variance_percentage),"%")
+        #plots sinewave
         self.plot_sine_wave(angles)
+        #plots reconstructed wave
         self.plot_reconstructed(recon_matrix,angles)
         #self.plot_matrix_vs_reconstructed_matrix(recon_matrix,angles)
+        #plots sine wave heatmap
         self.sine_wave_heatmap(covariance_matrix)
+        #plots sine wave reconstructed heatmap
         self.reconstructed_wave_heatmap(recon_matrix)
         #self.plot_heatmaps(recon_matrix,covariance_matrix)
+        #plots error heatmap of difference of actual with reconstructed values
         self.plot_error_heatmap(recon_matrix,covariance_matrix)
 
 #the main function is called first in the Sine Wave class
