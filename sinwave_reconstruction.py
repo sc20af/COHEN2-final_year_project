@@ -3,7 +3,7 @@ import numpy as np
 from scipy.linalg import toeplitz
 import matplotlib.pyplot as plt
 # class SinWave that has a purpose to use PCA and reconstruct a sin wave
-class SinWave(object):
+class SineWave(object):
     #function generates initial angles and covariance matrix that will be used in reconstruction
     def generate_matrix(self):
         number = 100 # number of points
@@ -53,6 +53,8 @@ class SinWave(object):
         #creates an array of zeros with the same shape as the covariance matrix
         reconstructed_matrix = np.zeros_like(covariance_matrix, dtype=np.complex128)
         #loop up to 'k' eigenvalues and eigenvectors
+        abs_eigenvalues = np.abs(eigenvalues)
+        current_sum_eigenvalues = np.sum(abs_eigenvalues)
         for i in range(k):
             eigenvector_value = eigenvectors[:,i] #eigenvector
             eigenvector_value_conjugate = np.conj(eigenvectors[:, i]) #eigenvector conjugate
@@ -61,7 +63,7 @@ class SinWave(object):
             reconstructed_matrix += element
         reconstructed_matrix = np.real(reconstructed_matrix) # takes only the real part of the array
 
-        return reconstructed_matrix
+        return reconstructed_matrix,current_sum_eigenvalues
     #function plots the original matrix next to the final reconstructed
     def plot_matrix_vs_reconstructed_matrix(self,reconstructed_matrix,angles):
         figure, axis = plt.subplots(1, 2,figsize=(10, 5))
@@ -85,6 +87,14 @@ class SinWave(object):
         plt.plot(angles, x, label='Original Matrix')
         plt.title("Original Sine Wave")
         plt.show()
+    def plot_reconstructed(self,reconstructed_matrix,angles):
+        amplitude = 1
+        f=1
+        T=1/f
+        x_recon = amplitude*np.sin(reconstructed_matrix/T)
+        plt.plot(angles, x_recon[:, 0], label='Reconstructed Matrix')
+        plt.title("Reconstructed Matrix")
+        plt.show()
     #function plots heatmap of covariance matrix next to the heatmap of the reconstructed matrix
     def plot_heatmaps(self,reconstructed_matrix,cov_matrix):
         fig, (ax1,ax2) = plt.subplots(1, 2, figsize=(10, 5))
@@ -101,12 +111,20 @@ class SinWave(object):
         plt.title('Sine Wave Heatmap')
         plt.colorbar()
         plt.show()
+    def reconstructed_wave_heatmap(self,reconstructed_matrix):
+        plt.imshow(reconstructed_matrix)
+        plt.title('Reconstructed Wave Heatmap')
+        plt.colorbar()
+        plt.show()
+    #function plots a
     #function plots a heatmap showing the error between the original and reconstructed matrices
     def plot_error_heatmap(self,reconstructed_matrix,cov_matrix):
-        error = cov_matrix - reconstructed_matrix
-        #print(error)
+        difference = np.abs(cov_matrix - reconstructed_matrix)
+        mean_difference = np.mean(difference)
+        error_percentage = mean_difference/np.mean(cov_matrix)
+        print("Error in reconstruction" ,np.real(error_percentage)*100,"%")
         # Plot the heatmap
-        plt.imshow(error, cmap='viridis', interpolation='nearest')
+        plt.imshow(difference, cmap='viridis', interpolation='nearest')
         # Add colorbar
         plt.colorbar()
         # Show the plot
@@ -117,16 +135,24 @@ class SinWave(object):
         angles,covariance_matrix = self.generate_matrix()
         eigenvalues, eigenvectors = self.eigen_decomposition(covariance_matrix)
         eigenvalues, eigenvectors = self.sort_eigen(eigenvalues, eigenvectors)
-        k = 100
-        eigenvalues = eigenvalues[:k]
-        eigenvectors = eigenvectors[:, :k]
-        recon_matrix = self.reconstructed_matrix(k,eigenvalues,eigenvectors,covariance_matrix)
+        k = 90
+        print("Number of components used:" ,k)
+        current_eigenvalues = eigenvalues[:k]
+        current_eigenvectors = eigenvectors[:, :k]
+        recon_matrix,current_sum_eigenvalues = self.reconstructed_matrix(k,current_eigenvalues,current_eigenvectors,covariance_matrix)
+        recon_full_matrix,total_sum_eigenvalues = self.reconstructed_matrix(100,eigenvalues[:100],eigenvectors[:, :100],covariance_matrix)
+        variance_percentage = current_sum_eigenvalues/total_sum_eigenvalues * 100
+        print("Current sum of eigenvalues", np.real(current_sum_eigenvalues))
+        print("Total sum of eigenvalues", np.real(total_sum_eigenvalues))
+        print("Percentage of variance", np.real(variance_percentage),"%")
         self.plot_sine_wave(angles)
-        self.plot_matrix_vs_reconstructed_matrix(recon_matrix,angles)
+        self.plot_reconstructed(recon_matrix,angles)
+        #self.plot_matrix_vs_reconstructed_matrix(recon_matrix,angles)
         self.sine_wave_heatmap(covariance_matrix)
-        self.plot_heatmaps(recon_matrix,covariance_matrix)
+        self.reconstructed_wave_heatmap(recon_matrix)
+        #self.plot_heatmaps(recon_matrix,covariance_matrix)
         self.plot_error_heatmap(recon_matrix,covariance_matrix)
 
-#the main function is called first in the SinWave class
+#the main function is called first in the Sine Wave class
 if __name__ == "__main__":
-    SinWave().main()
+    SineWave().main()
