@@ -61,7 +61,7 @@ if __name__ == "__main__":
             r = data.reconstruct(footage[k]) #calls function to reconstruct angles for the first worm
         count+=1
     r = r.transpose() # switches columns with rows using transpose built-in function
-    f_angles =r[0] #first worm angles
+    f_angles =r[0] #first timestamp worm angles
     pos.plot_angles(f_angles,s)
     sum=0
     for a in f_angles:
