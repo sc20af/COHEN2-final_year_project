@@ -152,4 +152,3 @@ for i in range(0,336):
     array4.append(v4)
     array5.append(v5)
     array_sum4.append(avg4)
-print(array5)
