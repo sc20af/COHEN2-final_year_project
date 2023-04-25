@@ -1,47 +1,29 @@
+#imported libraries
 from code_gen import EigenData
 import matplotlib.pyplot as plt
-import numpy as np
-import scipy.io
-import h5py
-import math
 
 data = EigenData() #creates instance of class
 eigenworms = data.get_eigenworms('EigenWorms.mat') #calls function get_eigenworms()
 footage = data.get_footage('20150814-All-PNAS2011-DataStitched .mat') #calls function get_footage() and returns dictionary of eigenvalues for the 12 worms
-count =0
-
+count =0 #counter to get information about the first worm
+#class named Initial_graphs
 class Initial_graphs(object):
-    #generates the first 6 worms 
+    #generates the first 6 worms graphs
     def generate_first_eigenworms(self):
-        s = []
+        s = [] # array of 100 equidistant points
         for i in range(1,101):
             a = i/100
             s.append(a)
         count = 1
+        #each eigenworm columns represents a Principal Component
         for ew in eigenworms[:6]:
-            plt.plot(s, ew, '-')
-            message = ('Eigenworm: '+ str(count))
+            plt.plot(s, ew, '-') #plots graph
+            message = ('Eigenworm: '+ str(count)) #title
             plt.title(message)
-            plt.xlabel("s")
-            plt.ylabel("θ(rad)")
+            plt.xlabel("s") #x label
+            plt.ylabel("θ(rad)") #y label
             plt.show()
             count+=1
-    def generate_a1a2(self):
-        a1 = []
-        a2 = []
-        for wormfootage in footage:
-            worm = footage[wormfootage]
-            wmrow_cnt = 0
-            a1 = worm[0]
-            a1 = a1[:100]
-            a2 = worm[1]
-            a2 = a2[:100]
-            plt.plot(a1, a2, '--.')
-            plt.title("probability density for the two PCA modes")
-            plt.xlabel("a1")
-            plt.ylabel("a2")
-            plt.show()
-#ig = Initial_graphs().generate_a1a2()
+
 ig = Initial_graphs().generate_first_eigenworms()
 
-#need to sort eigenworms 
