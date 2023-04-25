@@ -31,6 +31,7 @@ class GeometricPhase(object):
         a2 = a2[:100] #100 first timestamps
         self.generate_a1a2(a1,a2) #graph generation using function
         phase_angles = np.arctan2(-a2, a1) #finds phase values
+        print("Phase angle values:", phase_angles[:10])
         min_phase = 0 #minimum phase value
         max_phase = 0 #maximum phase value
         for phase in phase_angles:
@@ -46,10 +47,13 @@ class GeometricPhase(object):
         self.generate_phase_graph(phase_angles) #generate phase graph
         phase_velocity = np.diff(phase_angles) / np.diff(times) #phase velocity calculations
         frequency = phase_velocity / (2*math.pi) #frequency values
+        print("Phase velocity:", phase_velocity[:10])
         #print(frequency)
         self.generate_phase_velocity(phase_velocity,times) #generate phase velocity graphs
         times = times[:99] #times
         phase_acceleration = np.diff(phase_velocity) / np.diff(times) #phase acceleration values
+        print("Phase acceleration:", phase_acceleration[:10])
+        self.generate_phase_acceleration(phase_acceleration,times) #generate phase acceleration graphs
         for num in range(0,10): #velocity values of 10 timestamps
              vel1 = self.find_velocity(phase_velocity,r[0],num)
              print("Velocity for ",num ,"is:" ,vel1)
@@ -78,7 +82,9 @@ class GeometricPhase(object):
     #graph showing first two mode values
     def generate_a1a2(self,a1,a2):   
         plt.plot(a1, a2, '--.') #plots values
-        plt.title("First two PCA modes visual representation") #titles
+        print("Values of a1",a1[:10])
+        print("Values of a2",a2[:10])
+        plt.title("Geometric Phase using first 2 modes α1 and α2") #titles
         plt.xlabel("a1") #x label
         plt.ylabel("a2")#y label
         plt.show() # show graph
@@ -92,9 +98,11 @@ class GeometricPhase(object):
             curvature = (angles[i]-angles[i-1])/s #curvature
             Radius = 1/curvature #radius
             array.append(Radius) #array of radius
+            Total_Sum += Radius #sum of radius
+        Radius_avg = Total_Sum/100
         current_radius = array[num] #finds radius corresponding to that timestamp
-        velocity = current_radius*current_phv #calculates velocity using formula u=ωR
+        velocity = Radius_avg*current_phv #calculates velocity using formula u=ωR
         return velocity #returns velocity
-    
+
 #calls main function
 ig = GeometricPhase().main()
