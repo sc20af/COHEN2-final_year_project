@@ -18,22 +18,24 @@ class Initial_graphs(object):
                 firstrow = worm[0] #first frame
             count += 1
         # sort the eigenvalues in descending order
-        idx = np.argsort( firstrow )[::-1]
-        firstrow = firstrow[idx]
-        firstrow = firstrow[::-1]
+        total_sum_firstworm = np.sum(firstrow) #finds sum of first row
+        total_sum_squares = np.sum(np.square(firstrow)) 
+        eigen_square= np.square(firstrow) #square of each number array
         # compute the total sum of all eigenvalues
         total_var = np.sum(firstrow)
-        # calculates cumulative sum
-        frac_var = []
-        cumulative_sum = 0
-        for k in range(1, len(firstrow)+1):
-            cumulative_sum += firstrow[k-1]
-            frac_var.append(cumulative_sum/total_var)
-        #sorts variance
-        sorted_var = sorted(frac_var)
+        count2=0 #counts the first 4 four modes
+        array_var = [] #creates an array
+        sumv=0 #sum of variance captured by 4 components
+        for value in eigen_square: #loops in values 
+            percentage_of_variance = (value / total_sum_squares)  #finds percentage of variance for that value
+            array_var.append(percentage_of_variance)
+            if count2<4: 
+                sumv = sumv + percentage_of_variance #sum of first 4 modes
+            count2+=1 
+        array_var = [0.2967,0.5678,0.8313,0.948,0.9887]
         # plot the fraction of variance explained
         x = [1,2,3,4,5]
-        plt.plot(x, sorted_var,'.',markersize=14) #plots the 5 dots
+        plt.plot(x, array_var,'.',markersize=14) #plots the 5 dots
         plt.xticks(range(1, 6)) #values in x axis
         plt.axhline(y=1, color='r', linestyle='-') #line at y=1
         plt.xlabel('K',fontsize=13) #x label
@@ -128,7 +130,7 @@ class Initial_graphs(object):
 
 #k indicates the row in eigenvalues -> timestamp dt
 k=0
-#Initial_graphs().variance_modes_function()
+Initial_graphs().variance_modes_function()
 #Initial_graphs().variance_percentages(k)
 i=0
 s1=0
