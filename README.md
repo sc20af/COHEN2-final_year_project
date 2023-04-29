@@ -9,4 +9,4 @@ Reposity for final year project
 - "variance_graphs.py" includes calculations regarding the percentage of variance of the worm's posture reconstruction method and graphical representations of the overall variance.
 - "sinwave_reconstruction" is the python script for the first approach, which is reconstructing a sine wave.
 - "posture.py" python code for second approach and reconstructs the worm posture using as datasets the two matlab files and produces an animation of the reformed worm movement.
-- "GeometricPhase.py" generates the geometric phase and includes 
+- "GeometricPhase.py" generates the geometric phase and includes calculations and visualisations of parameters such as the phase, phase velocity, phase acceleration and moving velocity.
